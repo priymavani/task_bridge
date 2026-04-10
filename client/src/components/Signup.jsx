@@ -30,9 +30,25 @@ const Signup = () => {
 
         try {
             const response = await axios.post('https://task-bridge-eyh5.onrender.com/auth/signup', formData);
-            setMessage(response.data.message);
-            toast.success(response.data.message); // Show success toast
-            navigate('/login'); // Redirect to login after successful signup
+            
+            // Auto login if the server returns a token
+            if (response.data.token) {
+                sessionStorage.setItem('token', response.data.token);
+                sessionStorage.setItem('user_email', JSON.stringify(response.data.user.email));
+                sessionStorage.setItem('full_name', JSON.stringify(response.data.user.full_name));
+                sessionStorage.setItem('user', JSON.stringify(response.data.user));
+                sessionStorage.setItem('role', JSON.stringify(response.data.user.role));
+                sessionStorage.setItem('team_code', response.data.user.team_code);
+                sessionStorage.setItem('userId', JSON.stringify(response.data.user.userID));
+                
+                toast.success('Registration successful! Logging you in...');
+                navigate('/home'); // Redirect to dashboard
+            } else {
+                // Fallback for older server code
+                setMessage(response.data.message);
+                toast.success(response.data.message); 
+                navigate('/login'); 
+            }
         } catch (error) {
             const errorMessage = error.response?.data?.message || 'Error during signup';
             setMessage(errorMessage);

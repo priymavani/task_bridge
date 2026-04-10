@@ -15,7 +15,7 @@ exports.signup = async (req, res) => {
 
     try {
         // Check if user already exists
-        const existingUser = await User.findOne({ $and: [{ email }, { team_code },{role}] });
+        const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists with this email' });
         }
@@ -34,7 +34,20 @@ exports.signup = async (req, res) => {
         // Save the user to the database
         await newUser.save();
 
-        return res.status(201).json({ message: 'User registered successfully' });
+        // Generate token for auto-login after signup
+        const token = newUser.generateAuthToken();
+
+        return res.status(201).json({ 
+            message: 'User registered successfully',
+            token, 
+            user: { 
+                userID: newUser._id,
+                team_code: newUser.team_code,
+                email: newUser.email, 
+                role: newUser.role,
+                full_name: newUser.full_name 
+            }
+        });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: 'Internal server error in signup'});
