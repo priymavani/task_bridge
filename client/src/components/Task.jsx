@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../style/task.css";
+import "../style/Task.css";
 import { Link } from 'react-router-dom';
 import TeamLoader from "../Ui/Enter";
 import { ToastContainer, toast } from 'react-toastify'; // Import toast
