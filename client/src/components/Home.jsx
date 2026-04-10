@@ -1,335 +1,517 @@
-import Pattern from '../Ui/Pattern';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { 
+  Users, UserPlus, Presentation, 
+  CheckSquare, MessageSquare, FileText, 
+  Star, Quote, ArrowRight
+} from 'lucide-react';
+
 import homeImage from '../assets/home_i.png';
 import logo from '../assets/Logo.png';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { scrollYProgress } = useScroll();
+  const yPos = useTransform(scrollYProgress, [0, 1], [0, -50]);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1, 
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100, damping: 15 }
+    }
+  };
 
   return (
     <HomeContainer>
-      <Pattern />
+      {/* Subtle modern background grid */}
+      <BackgroundGrid style={{ y: yPos }} />
+      
       <HomeContent>
-        <HeroSection>
-          <HeroText>
-            <AnimatedLogo src={logo} alt="Task Bridge Logo" className="logo" />
-            <AnimatedTitle>Welcome to Task Bridge</AnimatedTitle>
-            <AnimatedSubtitle>Your Ultimate Platform for Task Management and Team Collaboration</AnimatedSubtitle>
-            <ButtonGroup>
-              <JoinTeamButton onClick={() => navigate('/login')}>
-                <span className="icon">👥</span> Join Your Team
-              </JoinTeamButton>
-              <CreateTeamButton onClick={() => navigate('/signup')}>
-                <span className="icon">⊕</span> Create Team
-              </CreateTeamButton>
-              <WhiteboardButton onClick={() => navigate('/whiteboard')}>
-                <span className="icon">🎨</span> Open Whiteboard
-              </WhiteboardButton>
-            </ButtonGroup>
-          </HeroText>
-          <HeroImage>
-            <img src={homeImage} alt="Team Collaboration" />
-          </HeroImage>
+        {/* HERO SECTION */}
+        <HeroSection as={motion.div} initial="hidden" animate="visible" variants={containerVariants}>
+          <HeroGrid>
+            <HeroText variants={containerVariants}>
+              <motion.img 
+                src={logo} 
+                alt="Task Bridge Logo" 
+                className="logo"
+                variants={itemVariants}
+                style={{ width: '80px', marginBottom: '2rem', filter: 'drop-shadow(0 4px 6px rgba(101,131,252,0.2))' }}
+                animate={{ y: [0, -8, 0] }}
+                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              />
+              <Title variants={itemVariants}>
+                Manage your work. <br /> <GradientText>Empower your team.</GradientText>
+              </Title>
+              <Subtitle variants={itemVariants}>
+                Task Bridge is the unified workspace that brings your team's tasks, meetings, and documents into one seamless, elegant experience.
+              </Subtitle>
+              
+              <ButtonGroup variants={itemVariants}>
+                <PrimaryButton onClick={() => navigate('/login')} whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <Users size={18} /> Join Default Team
+                </PrimaryButton>
+                <SecondaryButton onClick={() => navigate('/signup')} whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <UserPlus size={18} /> Create Workspace
+                </SecondaryButton>
+              </ButtonGroup>
+            </HeroText>
+            <HeroImageContainer variants={itemVariants}>
+              <motion.img 
+                src={homeImage} 
+                alt="Team Collaboration" 
+                className="hero-img"
+                animate={{ y: [0, -12, 0] }}
+                transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+              />
+            </HeroImageContainer>
+          </HeroGrid>
         </HeroSection>
 
-        <AboutSection>
-          <SectionTitle>What is Task Bridge?</SectionTitle>
-          <SectionText>
-            Task Bridge is an innovative platform designed to streamline task management and facilitate seamless team collaboration. It provides individuals and teams with a comprehensive set of tools to manage projects, organize tasks, and communicate effectively, all in one place.
-          </SectionText>
-        </AboutSection>
+        {/* FEATURES SECTION */}
+        <Section 
+          as={motion.div}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={containerVariants}
+        >
+          <SectionHeader>
+            <SectionBadge variants={itemVariants}>Features</SectionBadge>
+            <SectionTitle variants={itemVariants}>Everything you need to move faster.</SectionTitle>
+            <SectionSubtitle variants={itemVariants}>
+              Forget switching between tools. We provide a complete suite of professional utilities designed to help your team execute flawlessly.
+            </SectionSubtitle>
+          </SectionHeader>
 
-        <FeaturesSection>
-          <SectionTitle>Key Features</SectionTitle>
           <FeaturesGrid>
-            <FeatureCard>
-              <FeatureIcon>📋</FeatureIcon>
-              <FeatureTitle>Task Management</FeatureTitle>
-              <FeatureText>Easily create, assign, and track tasks with intuitive tools.</FeatureText>
-            </FeatureCard>
-            <FeatureCard>
-              <FeatureIcon>🤝</FeatureIcon>
-              <FeatureTitle>Team Collaboration</FeatureTitle>
-              <FeatureText>Work together in real-time with your team members.</FeatureText>
-            </FeatureCard>
-            <FeatureCard>
-              <FeatureIcon>📂</FeatureIcon>
-              <FeatureTitle>Document Sharing</FeatureTitle>
-              <FeatureText>Upload, share, and manage files effortlessly.</FeatureText>
-            </FeatureCard>
-            <FeatureCard>
-              <FeatureIcon>🎨</FeatureIcon>
-              <FeatureTitle>Virtual Whiteboard</FeatureTitle>
-              <FeatureText>Collaborate visually with an interactive whiteboard.</FeatureText>
-            </FeatureCard>
+            {[
+              { icon: CheckSquare, title: "Task Tracking", desc: "Easily create, assign, and track tasks with intuitive drag-and-drop tools.", color: "#4F46E5", bg: "#EEF2FF" },
+              { icon: MessageSquare, title: "Team Chat", desc: "Work together in real-time with integrated chat and seamless file dropping.", color: "#8B5CF6", bg: "#F5F3FF" },
+              { icon: Presentation, title: "Virtual Whiteboard", desc: "Collaborate visually with an interactive infinite whiteboard for brainstorming.", color: "#E11D48", bg: "#FFF1F2" },
+              { icon: FileText, title: "Document Vault", desc: "Manage version-controlled files effortlessly securely across your team.", color: "#059669", bg: "#ECFDF5" }
+            ].map((feat, idx) => (
+              <FeatureCard key={idx} variants={itemVariants} whileHover={{ y: -8, boxShadow: '0 20px 40px -15px rgba(0,0,0,0.05)' }}>
+                <IconWrapper style={{ color: feat.color, backgroundColor: feat.bg }}>
+                  <feat.icon size={24} strokeWidth={2.5} />
+                </IconWrapper>
+                <FeatureTitle>{feat.title}</FeatureTitle>
+                <FeatureText>{feat.desc}</FeatureText>
+              </FeatureCard>
+            ))}
           </FeaturesGrid>
-        </FeaturesSection>
+        </Section>
 
-        <TestimonialsSection>
-          <SectionTitle>What Our Users Say</SectionTitle>
+        {/* TESTIMONIALS SECTION */}
+        <Section
+          as={motion.div}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={containerVariants}
+        >
+          <SectionHeader>
+            <SectionBadge variants={itemVariants}>Testimonials</SectionBadge>
+            <SectionTitle variants={itemVariants}>Trusted by professionals.</SectionTitle>
+          </SectionHeader>
+
           <TestimonialsGrid>
-            <TestimonialCard>
-              <TestimonialText>"Task Bridge has transformed the way our team works. Highly recommended!"</TestimonialText>
-              <TestimonialAuthor>- Priy Mavani</TestimonialAuthor>
-            </TestimonialCard>
-            <TestimonialCard>
-              <TestimonialText>"The task management tools are incredibly intuitive and easy to use."</TestimonialText>
-              <TestimonialAuthor>- Krish Shyara</TestimonialAuthor>
-            </TestimonialCard>
+            {[
+              { author: "Priy Mavani", role: "Team Lead", text: "Task Bridge completely transformed our workflow. Our cross-functional teams now communicate effortlessly." },
+              { author: "Krish Shyara", role: "Project Manager", text: "The UI is clean and fast. We abandoned three massive enterprise tools just to consolidate onto this platform." }
+            ].map((test, idx) => (
+              <TestimonialCard key={idx} variants={itemVariants} whileHover={{ y: -5 }}>
+                <Quote size={60} color="#F1F5F9" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 0 }} />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <StarsRow>
+                    {[1, 2, 3, 4, 5].map((star) => <Star key={star} size={14} fill="#FACC15" color="#FACC15" />)}
+                  </StarsRow>
+                  <TestimonialText>"{test.text}"</TestimonialText>
+                  <TestimonialAuthor>{test.author}</TestimonialAuthor>
+                  <TestimonialRole>{test.role}</TestimonialRole>
+                </div>
+              </TestimonialCard>
+            ))}
           </TestimonialsGrid>
-        </TestimonialsSection>
+        </Section>
 
-        <CtaSection>
-          <SectionTitle>Ready to Get Started?</SectionTitle>
-          <SectionText>Join Task Bridge today and take your team collaboration to the next level.</SectionText>
-          <ButtonGroup>
-            <JoinTeamButton onClick={() => navigate('/login')}>
-              <span className="icon">👥</span> Join Your Team
-            </JoinTeamButton>
-            <CreateTeamButton onClick={() => navigate('/signup')}>
-              <span className="icon">⊕</span> Create Team
-            </CreateTeamButton>
-          </ButtonGroup>
+        {/* CTA SECTION */}
+        <CtaSection
+          as={motion.div}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={containerVariants}
+        >
+          <CtaBox variants={itemVariants}>
+            <CtaTitle>Start building your team today.</CtaTitle>
+            <CtaText>Join thousands of users organizing their work with Task Bridge.</CtaText>
+            <ButtonGroup style={{ justifyContent: 'center' }}>
+              <PrimaryCtaButton onClick={() => navigate('/login')} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                Get Started <ArrowRight size={16} strokeWidth={2.5} style={{ marginLeft: '6px' }} />
+              </PrimaryCtaButton>
+            </ButtonGroup>
+          </CtaBox>
         </CtaSection>
+
       </HomeContent>
     </HomeContainer>
   );
 };
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-`;
-
-const float = keyframes`
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-`;
+// -----------------------------------------------------
+// STYLED COMPONENTS (PREMIUM LIGHT THEME)
+// -----------------------------------------------------
 
 const HomeContainer = styled.div`
   position: relative;
   min-height: 100vh;
   overflow: hidden;
+  background-color: #3498db;
+  color: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+`;
+
+const BackgroundGrid = styled(motion.div)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200vh;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  z-index: 0;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
 `;
 
 const HomeContent = styled.div`
   position: relative;
   z-index: 1;
-  max-width: 1200px;
+  max-width: 1150px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0 2rem;
 `;
 
-const HeroSection = styled.section`
+const Section = styled.section`
+  padding: 7rem 0;
+  min-height: auto;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 4rem 0;
-`;
-
-const HeroText = styled.div`
-  max-width: 600px;
-`;
-
-const AnimatedLogo = styled.img`
-  margin-top: -80px;
-  width: 80px;
-  height: auto;
-  margin-bottom: 1rem;
-  animation: ${float} 3s ease-in-out infinite;
-`;
-
-const AnimatedTitle = styled.h1`
-  font-size: 3rem;
-  color: rgb(101, 131, 252);
-  margin-bottom: 1rem;
-  animation: ${fadeIn} 1s ease-in-out;
-`;
-
-const AnimatedSubtitle = styled.h2`
-  font-size: 1.5rem;
-  color: #555;
-  margin-bottom: 2rem;
-  animation: ${fadeIn} 1.5s ease-in-out;
-`;
-
-const ButtonGroup = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
+  flex-direction: column;
   justify-content: center;
 `;
 
-const JoinTeamButton = styled.button`
-  padding: 0.8rem 1.5rem;
-  background: rgb(137, 159, 246);
-  color: white;
+const HeroSection = styled(Section)`
+  padding-top: 10rem;
+  padding-bottom: 5rem;
+  min-height: 90vh;
+`;
+
+// HERO
+const HeroGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3rem;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 4rem;
+  }
+`;
+
+const HeroText = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  
+  @media (max-width: 968px) {
+    align-items: center;
+  }
+`;
+
+const Title = styled(motion.h1)`
+  font-size: clamp(3rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.04em;
+`;
+
+const GradientText = styled.span`
+  background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+`;
+
+const Subtitle = styled(motion.p)`
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  max-width: 95%;
+  font-weight: 400;
+`;
+
+const ButtonGroup = styled(motion.div)`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  
+  @media (max-width: 968px) {
+    justify-content: center;
+  }
+`;
+
+const BaseButton = styled(motion.button)`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px; 
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
   border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.2s ease;
+`;
+
+const PrimaryButton = styled(BaseButton)`
+  background: #0F172A;
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px 0 rgba(15, 23, 42, 0.25);
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(184, 198, 255, 0.3);
+    background: #1E293B;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.23);
   }
 `;
 
-const CreateTeamButton = styled.button`
-  padding: 0.8rem 1.5rem;
-  background: #E3D2FC;
-  color: rgb(39, 45, 71);
-  border: 2px solid #b8c6ff;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+const SecondaryButton = styled(BaseButton)`
+  background: #FFFFFF;
+  color: #334155;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(184, 198, 255, 0.3);
+    background: #F8FAFC;
+    color: #0F172A;
+    border-color: #CBD5E1;
   }
 `;
 
-const WhiteboardButton = styled.button`
-  padding: 0.8rem 1.5rem;
-  background: #FFE5E5;
-  color: #FF4444;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255, 68, 68, 0.2);
+const HeroImageContainer = styled(motion.div)`
+  .hero-img {
+    width: 100%;
+    max-width: 600px;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.08));
+  }
+  
+  @media (max-width: 968px) {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
   }
 `;
 
-const HeroImage = styled.div`
-  img {
-    max-width: 500px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    animation: ${float} 4s ease-in-out infinite;
-  }
-`;
-
-const AboutSection = styled.section`
-  padding: 4rem 0;
+// SECTION TITLES
+const SectionHeader = styled.div`
   text-align: center;
+  margin-bottom: 4rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 2rem;
-  color: rgb(120, 130, 243);
-  margin-bottom: 1rem;
-  animation: ${fadeIn} 1s ease-in-out;
+const SectionBadge = styled(motion.div)`
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background: #EEF2FF;
+  border: 1px solid #E0E7FF;
+  color: #4F46E5;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
 `;
 
-const SectionText = styled.p`
-  font-size: 1.1rem;
-  color: #555;
-  max-width: 800px;
-  margin: 0 auto;
-  animation: ${fadeIn} 1.5s ease-in-out;
+const SectionTitle = styled(motion.h2)`
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.03em;
 `;
 
-const FeaturesSection = styled.section`
-  padding: 4rem 0;
-  text-align: center;
+const SectionSubtitle = styled(motion.p)`
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
 `;
 
+// FEATURES
 const FeaturesGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 2rem;
 `;
 
-const FeatureCard = styled.div`
-  background: rgb(255, 255, 255);
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(184, 198, 255, 0.2);
-  }
+const FeatureCard = styled(motion.div)`
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  border: 1px solid #F1F5F9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: all 0.3s ease;
 `;
 
-const FeatureIcon = styled.div`
-  font-size: 2rem;
-  margin-bottom: 1rem;
+const IconWrapper = styled.div`
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 1.5rem;
-  color: #b8c6ff;
-  margin-bottom: 1rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0F172A;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
 `;
 
 const FeatureText = styled.p`
-  font-size: 1rem;
-  color: #555;
+  color: #64748B;
+  line-height: 1.6;
+  font-size: 0.95rem;
 `;
 
-const TestimonialsSection = styled.section`
-  padding: 4rem 0;
-  text-align: center;
-`;
-
+// TESTIMONIALS
 const TestimonialsGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
 `;
 
-const TestimonialCard = styled.div`
-  background: white;
-  padding: 2rem;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+const TestimonialCard = styled(motion.div)`
+  background: #FFFFFF;
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid #F1F5F9;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  position: relative;
+  overflow: hidden;
+`;
 
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(184, 198, 255, 0.2);
-  }
+const StarsRow = styled.div`
+  display: flex;
+  gap: 0.2rem;
+  margin-bottom: 1.25rem;
 `;
 
 const TestimonialText = styled.p`
+  font-size: 1.05rem;
+  color: #334155;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  font-weight: 400;
+`;
+
+const TestimonialAuthor = styled.h4`
   font-size: 1rem;
-  color: #555;
-  margin-bottom: 1rem;
+  font-weight: 700;
+  color: #0F172A;
 `;
 
-const TestimonialAuthor = styled.p`
-  font-weight: bold;
-  color: #b8c6ff;
+const TestimonialRole = styled.p`
+  font-size: 0.85rem;
+  color: #64748B;
+  margin-top: 0.2rem;
 `;
 
+// CTA
 const CtaSection = styled.section`
-  padding: 4rem 0;
+  padding: 2rem 0 6rem 0;
+`;
+
+const CtaBox = styled(motion.div)`
+  background: #0F172A;
+  border-radius: 24px;
+  padding: 4rem 2rem;
   text-align: center;
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.2);
+  position: relative;
+  overflow: hidden;
+
+  /* Subtle inner pattern */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+  }
+`;
+
+const CtaTitle = styled.h2`
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #FFFFFF;
+  letter-spacing: -0.03em;
+  position: relative;
+  z-index: 2;
+`;
+
+const CtaText = styled.p`
+  font-size: 1.125rem;
+  color: #94A3B8;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+`;
+
+const PrimaryCtaButton = styled(BaseButton)`
+  background: #FFFFFF;
+  color: #0F172A;
+  box-shadow: 0 4px 14px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  z-index: 2;
+
+  &:hover {
+    background: #F8FAFC;
+    transform: translateY(-2px);
+  }
 `;
 
 export default Home;

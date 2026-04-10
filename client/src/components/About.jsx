@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../style/About.css";
+import { LayoutDashboard, MessageSquare, Calendar, FileText, Presentation, Video } from "lucide-react";
 
 const About = () => {
   useEffect(() => {
@@ -39,27 +40,27 @@ const About = () => {
         <h2 className="why_choose">Why Choose Task Bridge?</h2>
         <div className="feature-grid">
           <motion.div className="feature-card" whileHover={{ scale: 1.1 }}>
-            <h3>🛠️ Task Management</h3>
+            <h3><LayoutDashboard size={20} style={{ display: 'inline', marginRight: '6px' }} /> Task Management</h3>
             <p>Efficiently create, assign, and track tasks with real-time updates.</p>
           </motion.div>
           <motion.div className="feature-card" whileHover={{ scale: 1.1 }}>
-            <h3>💬 Team Collaboration</h3>
+            <h3><MessageSquare size={20} style={{ display: 'inline', marginRight: '6px' }} /> Team Collaboration</h3>
             <p>Communicate seamlessly with team members through built-in messaging.</p>
           </motion.div>
           <motion.div className="feature-card" whileHover={{ scale: 1.1 }}>
-            <h3>📅 Calendar Integration</h3>
+            <h3><Calendar size={20} style={{ display: 'inline', marginRight: '6px' }} /> Calendar Integration</h3>
             <p>Stay on top of deadlines with an interactive project calendar.</p>
           </motion.div>
           <motion.div className="feature-card" whileHover={{ scale: 1.1 }}>
-            <h3>📂 File Sharing</h3>
+            <h3><FileText size={20} style={{ display: 'inline', marginRight: '6px' }} /> File Sharing</h3>
             <p>Upload and manage project-related documents in one central location.</p>
           </motion.div>
           <motion.div className="feature-card" whileHover={{ scale: 1.1 }}>
-            <h3>🎨 Virtual Board</h3>
+            <h3><Presentation size={20} style={{ display: 'inline', marginRight: '6px' }} /> Virtual Board</h3>
             <p>Collaborate visually with a real-time interactive whiteboard.</p>
           </motion.div>
           <motion.div className="feature-card" whileHover={{ scale: 1.1 }}>
-            <h3>🎥 Video Conferencing</h3>
+            <h3><Video size={20} style={{ display: 'inline', marginRight: '6px' }} /> Video Conferencing</h3>
             <p>Set up meetings, take notes, and record sessions—all within the platform.</p>
           </motion.div>
         </div>

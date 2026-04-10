@@ -28,7 +28,7 @@ const Document = () => {
 
   // API Configuration
   const api = axios.create({
-    baseURL: 'http://localhost:4400/file',
+    baseURL: 'https://task-bridge-eyh5.onrender.com/file',
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -56,7 +56,7 @@ const Document = () => {
     try {
       const response = await api.get(`/team/${team_code}`);
       console.log('API Response:', response.data); // Debugging: Log the response
-  
+
       // Ensure the response data is an array
       if (Array.isArray(response.data)) {
         setFiles(response.data);
@@ -67,7 +67,7 @@ const Document = () => {
       setError('Error fetching documents');
       toast.error('Error fetching documents');
       console.error('Error details:', err.response?.data || err.message);
-  
+
       // Reset files to an empty array in case of error
       setFiles([]);
     }
@@ -156,8 +156,8 @@ const Document = () => {
 
     setIsSharing(true);
     try {
-      const response = await api.post(`/${selectedFileId}/share`, 
-        { user_id: selectedMember }, 
+      const response = await api.post(`/${selectedFileId}/share`,
+        { user_id: selectedMember },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -243,7 +243,7 @@ const Document = () => {
                 </td>
                 <td>{(file.size / 1024).toFixed(2)} KB</td>
                 <td>
-                  {file.uploaded_by?.full_name } {/* Fallback to 'Unknown' if name is missing */}
+                  {file.uploaded_by?.full_name} {/* Fallback to 'Unknown' if name is missing */}
                 </td>
                 <td>
                   <div className="file-actions">
@@ -265,18 +265,18 @@ const Document = () => {
           <div className="modal">
             <h3>Select a Team Member to Share</h3>
             <select onChange={(e) => setSelectedMember(e.target.value)} defaultValue="">
-  <option value="" disabled>Select Member</option>
-  {teamMembers
-    .filter(member => 
-      member._id !== files.find(file => file._id === selectedFileId)?.uploaded_by?._id &&  // Exclude uploader
-      !files.find(file => file._id === selectedFileId)?.shared_with?.includes(member._id) // Exclude shared members
-    )
-    .map((member) => (
-      <option key={member._id} value={member._id}>
-        {member.full_name}
-      </option>
-    ))}
-</select>
+              <option value="" disabled>Select Member</option>
+              {teamMembers
+                .filter(member =>
+                  member._id !== files.find(file => file._id === selectedFileId)?.uploaded_by?._id &&  // Exclude uploader
+                  !files.find(file => file._id === selectedFileId)?.shared_with?.includes(member._id) // Exclude shared members
+                )
+                .map((member) => (
+                  <option key={member._id} value={member._id}>
+                    {member.full_name}
+                  </option>
+                ))}
+            </select>
 
             <div className="modal-actions">
               <button onClick={handleShare} disabled={isSharing}>

@@ -51,7 +51,7 @@ const TeamMembers = () => {
 
       setLoading(true);
       try {
-        const response = await axios.get(`http://localhost:4400/team/${team_code}`, {
+        const response = await axios.get(`https://task-bridge-eyh5.onrender.com/team/${team_code}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ const TeamMembers = () => {
       try {
         setLoading(true);
         const response = await axios.post(
-          'http://localhost:4400/team/import-members',
+          'https://task-bridge-eyh5.onrender.com/team/import-members',
           { team_code, members: data },
           {
             headers: {
@@ -152,7 +152,7 @@ const TeamMembers = () => {
 
         if (response.data.success) {
           toast.success('Members imported successfully!');
-          const updatedMembersResponse = await axios.get(`http://localhost:4400/team/${team_code}`, {
+          const updatedMembersResponse = await axios.get(`https://task-bridge-eyh5.onrender.com/team/${team_code}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',
@@ -335,7 +335,7 @@ const TeamMembers = () => {
   );
 
 
-      // Modal style
+  // Modal style
   const modalStyle = {
     position: 'absolute',
     top: '50%',

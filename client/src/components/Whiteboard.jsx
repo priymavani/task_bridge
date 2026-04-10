@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { HexColorPicker } from "react-colorful";
 import toast from "react-hot-toast";
 import "../style/Whiteboard.css";
+import { MousePointer2, Pen, Square, Circle, Triangle, Type, Undo, Redo, Copy, XCircle, Trash2, Save, Home } from "lucide-react";
 
 // Import fabric from the CommonJS distribution
 import { fabric } from "fabric/dist/fabric";
@@ -247,34 +248,34 @@ const Whiteboard = () => {
             className={`tool-button ${currentTool === "select" ? "active" : ""}`}
             onClick={() => setCurrentTool("select")}
           >
-            ✋ Select
+            <MousePointer2 size={16} /> Select
           </button>
           <button
             className={`tool-button ${currentTool === "pen" ? "active" : ""}`}
             onClick={() => setCurrentTool("pen")}
           >
-            ✏️ Pen
+            <Pen size={16} /> Pen
           </button>
           <button
             className={`tool-button ${currentTool === "rectangle" ? "active" : ""}`}
             onClick={() => setCurrentTool("rectangle")}
           >
-            ⬜ Rectangle
+            <Square size={16} /> Rectangle
           </button>
           <button
             className={`tool-button ${currentTool === "circle" ? "active" : ""}`}
             onClick={() => setCurrentTool("circle")}
           >
-            ⭕ Circle
+            <Circle size={16} /> Circle
           </button>
           <button
             className={`tool-button ${currentTool === "triangle" ? "active" : ""}`}
             onClick={() => setCurrentTool("triangle")}
           >
-            📐 Triangle
+            <Triangle size={16} /> Triangle
           </button>
           <button className="tool-button" onClick={addText}>
-            📝 Text
+            <Type size={16} /> Text
           </button>
         </div>
 
@@ -303,25 +304,25 @@ const Whiteboard = () => {
 
         <div className="tool-group">
           <button className="tool-button" onClick={undo}>
-            ↺ Undo
+            <Undo size={16} /> Undo
           </button>
           <button className="tool-button" onClick={redo}>
-            ↻ Redo
+            <Redo size={16} /> Redo
           </button>
           <button className="tool-button" onClick={copySelected}>
-            📋 Copy
+            <Copy size={16} /> Copy
           </button>
           <button className="tool-button delete" onClick={deleteSelected}>
-            ❌ Delete
+            <XCircle size={16} /> Delete
           </button>
           <button className="tool-button clear" onClick={clearCanvas}>
-            🗑️ Clear
+            <Trash2 size={16} /> Clear
           </button>
           <button className="tool-button download" onClick={downloadCanvas}>
-            💾 Save
+            <Save size={16} /> Save
           </button>
           <button className="tool-button home" onClick={() => navigate("/home")}>
-            🏠 Home
+            <Home size={16} /> Home
           </button>
         </div>
       </div>

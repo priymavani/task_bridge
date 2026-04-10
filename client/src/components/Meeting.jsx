@@ -28,7 +28,7 @@ const Meeting = () => {
 
   // Create axios instance with default headers
   const axiosInstance = axios.create({
-    baseURL: 'http://localhost:4400',
+    baseURL: 'https://task-bridge-eyh5.onrender.com',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
@@ -95,7 +95,7 @@ const Meeting = () => {
     fetchMeetings();
     fetchTeamMembers();
 
-    const newSocket = io('http://localhost:4400', {
+    const newSocket = io('https://task-bridge-eyh5.onrender.com', {
       auth: {
         token: token
       }
