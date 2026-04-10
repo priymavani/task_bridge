@@ -48,18 +48,18 @@ const Signup = () => {
                 <div className="logo-container">
                     <img src={logo} alt="Task Bridge Logo" className="logo" />
                 </div>
-                
+
                 <div className="signup-content">
-                    <h3>Start for free</h3>
+                    <h3>Join Team</h3>
                     <h1>Create new account</h1>
-                    
+
                     <div className="role-section">
                         <h4>Role</h4>
                         <div className="radio-container">
-                            <input 
-                                type="radio" 
-                                id="admin" 
-                                name="role" 
+                            <input
+                                type="radio"
+                                id="admin"
+                                name="role"
                                 value="admin"
                                 checked={formData.role === 'admin'}
                                 onChange={handleChange}
@@ -132,13 +132,13 @@ const Signup = () => {
                     {message && <div className="message">{message}</div>}
                 </div>
             </div>
-            
+
             <div className="signup-right">
                 <img src={home_i} alt="Team Collaboration" />
             </div>
 
             {/* Toast Container */}
-            <ToastContainer 
+            <ToastContainer
                 position="top-right"
                 autoClose={5000}
                 hideProgressBar={false}

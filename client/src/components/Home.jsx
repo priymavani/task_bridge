@@ -2,10 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { 
-  Users, UserPlus, Presentation, 
-  CheckSquare, MessageSquare, FileText, 
-  Star, Quote, ArrowRight
+import {
+  Users, UserPlus, Presentation,
+  CheckSquare, MessageSquare, FileText,
+  Star, Quote, ArrowRight, Play
 } from 'lucide-react';
 
 import homeImage from '../assets/home_i.png';
@@ -14,20 +14,20 @@ import logo from '../assets/Logo.png';
 const Home = () => {
   const navigate = useNavigate();
   const { scrollYProgress } = useScroll();
-  const yPos = useTransform(scrollYProgress, [0, 1], [0, -50]);
+  const yPos = useTransform(scrollYProgress, [0, 1], [0, -80]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { staggerChildren: 0.15, delayChildren: 0.1 }
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.1 }
     }
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { 
-      y: 0, 
+    visible: {
+      y: 0,
       opacity: 1,
       transition: { type: "spring", stiffness: 100, damping: 15 }
     }
@@ -35,53 +35,68 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      {/* Subtle modern background grid */}
-      <BackgroundGrid style={{ y: yPos }} />
-      
+      {/* Decorative Background Elements */}
+      <TopGradientBlob />
+      <BottomGradientBlob style={{ y: yPos }} />
+      <BackgroundGrid />
+
       <HomeContent>
         {/* HERO SECTION */}
         <HeroSection as={motion.div} initial="hidden" animate="visible" variants={containerVariants}>
           <HeroGrid>
             <HeroText variants={containerVariants}>
-              <motion.img 
-                src={logo} 
-                alt="Task Bridge Logo" 
-                className="logo"
-                variants={itemVariants}
-                style={{ width: '80px', marginBottom: '2rem', filter: 'drop-shadow(0 4px 6px rgba(101,131,252,0.2))' }}
-                animate={{ y: [0, -8, 0] }}
-                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-              />
+              <Badge variants={itemVariants}>
+                <span className="dot" />
+                Task Bridge 2.0 is now live
+              </Badge>
+
               <Title variants={itemVariants}>
-                Manage your work. <br /> <GradientText>Empower your team.</GradientText>
+                Unify your workflow.<br />
+                <GradientText>Unleash your team.</GradientText>
               </Title>
+
               <Subtitle variants={itemVariants}>
-                Task Bridge is the unified workspace that brings your team's tasks, meetings, and documents into one seamless, elegant experience.
+                The all-in-one workspace that brings your project management, real-time collaboration, and documents into one beautifully seamless experience.
               </Subtitle>
-              
+
               <ButtonGroup variants={itemVariants}>
-                <PrimaryButton onClick={() => navigate('/login')} whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
-                  <Users size={18} /> Join Default Team
+                <PrimaryButton onClick={() => navigate('/login')} whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}>
+                  Join Team <ArrowRight size={18} strokeWidth={2.5} style={{ marginLeft: '6px' }} />
                 </PrimaryButton>
-                <SecondaryButton onClick={() => navigate('/signup')} whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }}>
-                  <UserPlus size={18} /> Create Workspace
+                <SecondaryButton onClick={() => navigate('/signup')} whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: 0.98 }}>
+                  <Play size={18} fill="#334155" /> Create Team
                 </SecondaryButton>
               </ButtonGroup>
+
+              <HeroFooter variants={itemVariants}>
+                <div className="users-avatars">
+                  {/* Decorative avatars container */}
+                  <div className="avatar a1"></div>
+                  <div className="avatar a2"></div>
+                  <div className="avatar a3"></div>
+                </div>
+                <div className="users-text">
+                  <strong>Join 10,000+ teams</strong> <br />
+                  transforming how they work
+                </div>
+              </HeroFooter>
             </HeroText>
-            <HeroImageContainer variants={itemVariants}>
-              <motion.img 
-                src={homeImage} 
-                alt="Team Collaboration" 
-                className="hero-img"
-                animate={{ y: [0, -12, 0] }}
+
+            <HeroImageWrapper variants={itemVariants}>
+              <HeroImageRing />
+              <motion.div
+                className="image-container"
+                animate={{ y: [0, -10, 0] }}
                 transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
-              />
-            </HeroImageContainer>
+              >
+                <img src={homeImage} alt="Team Collaboration" className="main-img" />
+              </motion.div>
+            </HeroImageWrapper>
           </HeroGrid>
         </HeroSection>
 
         {/* FEATURES SECTION */}
-        <Section 
+        <Section
           as={motion.div}
           initial="hidden"
           whileInView="visible"
@@ -89,23 +104,22 @@ const Home = () => {
           variants={containerVariants}
         >
           <SectionHeader>
-            <SectionBadge variants={itemVariants}>Features</SectionBadge>
-            <SectionTitle variants={itemVariants}>Everything you need to move faster.</SectionTitle>
+            <SectionTitle variants={itemVariants}>The ultimate productivity suite.</SectionTitle>
             <SectionSubtitle variants={itemVariants}>
-              Forget switching between tools. We provide a complete suite of professional utilities designed to help your team execute flawlessly.
+              Say goodbye to juggling ten different apps. We provide a complete arsenal of professional utilities designed perfectly for modern teams.
             </SectionSubtitle>
           </SectionHeader>
 
           <FeaturesGrid>
             {[
-              { icon: CheckSquare, title: "Task Tracking", desc: "Easily create, assign, and track tasks with intuitive drag-and-drop tools.", color: "#4F46E5", bg: "#EEF2FF" },
-              { icon: MessageSquare, title: "Team Chat", desc: "Work together in real-time with integrated chat and seamless file dropping.", color: "#8B5CF6", bg: "#F5F3FF" },
-              { icon: Presentation, title: "Virtual Whiteboard", desc: "Collaborate visually with an interactive infinite whiteboard for brainstorming.", color: "#E11D48", bg: "#FFF1F2" },
-              { icon: FileText, title: "Document Vault", desc: "Manage version-controlled files effortlessly securely across your team.", color: "#059669", bg: "#ECFDF5" }
+              { icon: CheckSquare, title: "Task Tracking", desc: "Create, assign, and track tasks with robust agile boards.", color: "#3498db", bg: "rgba(52, 152, 219, 0.1)" },
+              { icon: MessageSquare, title: "Team Chat", desc: "Work together in real-time with integrated chat channels.", color: "#8B5CF6", bg: "rgba(139, 92, 246, 0.1)" },
+              { icon: Presentation, title: "Virtual Whiteboard", desc: "Collaborate visually with an interactive infinite whiteboard.", color: "#E11D48", bg: "rgba(225, 29, 72, 0.1)" },
+              { icon: FileText, title: "Document Vault", desc: "Manage version-controlled files securely across your team.", color: "#059669", bg: "rgba(5, 150, 105, 0.1)" }
             ].map((feat, idx) => (
-              <FeatureCard key={idx} variants={itemVariants} whileHover={{ y: -8, boxShadow: '0 20px 40px -15px rgba(0,0,0,0.05)' }}>
+              <FeatureCard key={idx} variants={itemVariants} whileHover={{ y: -8, boxShadow: '0 25px 50px -12px rgba(0,0,0,0.06)' }}>
                 <IconWrapper style={{ color: feat.color, backgroundColor: feat.bg }}>
-                  <feat.icon size={24} strokeWidth={2.5} />
+                  <feat.icon size={26} strokeWidth={2} />
                 </IconWrapper>
                 <FeatureTitle>{feat.title}</FeatureTitle>
                 <FeatureText>{feat.desc}</FeatureText>
@@ -123,20 +137,19 @@ const Home = () => {
           variants={containerVariants}
         >
           <SectionHeader>
-            <SectionBadge variants={itemVariants}>Testimonials</SectionBadge>
-            <SectionTitle variants={itemVariants}>Trusted by professionals.</SectionTitle>
+            <SectionTitle variants={itemVariants}>Loved by industry leaders.</SectionTitle>
           </SectionHeader>
 
           <TestimonialsGrid>
             {[
               { author: "Priy Mavani", role: "Team Lead", text: "Task Bridge completely transformed our workflow. Our cross-functional teams now communicate effortlessly." },
-              { author: "Krish Shyara", role: "Project Manager", text: "The UI is clean and fast. We abandoned three massive enterprise tools just to consolidate onto this platform." }
+              { author: "Krish Shyara", role: "Project Manager", text: "The UI is incredibly clean and fast. We abandoned massive enterprise tools just to consolidate onto this platform." }
             ].map((test, idx) => (
               <TestimonialCard key={idx} variants={itemVariants} whileHover={{ y: -5 }}>
-                <Quote size={60} color="#F1F5F9" style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 0 }} />
+                <Quote size={80} color="#F1F5F9" style={{ position: 'absolute', top: '-10px', right: '-10px', zIndex: 0 }} />
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <StarsRow>
-                    {[1, 2, 3, 4, 5].map((star) => <Star key={star} size={14} fill="#FACC15" color="#FACC15" />)}
+                    {[1, 2, 3, 4, 5].map((star) => <Star key={star} size={16} fill="#FACC15" color="#FACC15" />)}
                   </StarsRow>
                   <TestimonialText>"{test.text}"</TestimonialText>
                   <TestimonialAuthor>{test.author}</TestimonialAuthor>
@@ -157,10 +170,10 @@ const Home = () => {
         >
           <CtaBox variants={itemVariants}>
             <CtaTitle>Start building your team today.</CtaTitle>
-            <CtaText>Join thousands of users organizing their work with Task Bridge.</CtaText>
+            <CtaText>Join thousands of high-performing teams organizing their work with Task Bridge.</CtaText>
             <ButtonGroup style={{ justifyContent: 'center' }}>
-              <PrimaryCtaButton onClick={() => navigate('/login')} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                Get Started <ArrowRight size={16} strokeWidth={2.5} style={{ marginLeft: '6px' }} />
+              <PrimaryCtaButton onClick={() => navigate('/login')} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                Get Started for Free
               </PrimaryCtaButton>
             </ButtonGroup>
           </CtaBox>
@@ -172,43 +185,64 @@ const Home = () => {
 };
 
 // -----------------------------------------------------
-// STYLED COMPONENTS (PREMIUM LIGHT THEME)
+// STYLED COMPONENTS (ULTRA-PREMIUM LIGHT THEME)
 // -----------------------------------------------------
 
 const HomeContainer = styled.div`
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background-color: #3498db;
-  color: #FFFFFF;
+  background-color: #FFFFFF;
+  color: #0F172A;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 `;
 
-const BackgroundGrid = styled(motion.div)`
+// Soft ambient glowing background blobs using the requested #3498db blue
+const TopGradientBlob = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 200vh;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
+  top: -15%;
+  left: 5%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(52,152,219,0.08) 0%, transparent 60%);
   z-index: 0;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
-  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+`;
+
+const BottomGradientBlob = styled(motion.div)`
+  position: absolute;
+  top: 60%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(139,92,246,0.06) 0%, transparent 60%);
+  z-index: 0;
+  pointer-events: none;
+`;
+
+const BackgroundGrid = styled.div`
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 30%, rgba(0,0,0,0) 100%);
+  z-index: 0;
+  pointer-events: none;
 `;
 
 const HomeContent = styled.div`
   position: relative;
   z-index: 1;
-  max-width: 1150px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 2rem;
 `;
 
 const Section = styled.section`
-  padding: 7rem 0;
+  padding: 8rem 0;
   min-height: auto;
   display: flex;
   flex-direction: column;
@@ -217,44 +251,66 @@ const Section = styled.section`
 
 const HeroSection = styled(Section)`
   padding-top: 10rem;
-  padding-bottom: 5rem;
-  min-height: 90vh;
+  padding-bottom: 6rem;
+  min-height: 95vh;
 `;
 
 // HERO
 const HeroGrid = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 3rem;
 
   @media (max-width: 968px) {
     grid-template-columns: 1fr;
     text-align: center;
-    padding-top: 4rem;
+    padding-top: 2rem;
   }
 `;
 
 const HeroText = styled(motion.div)`
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   
   @media (max-width: 968px) {
     align-items: center;
   }
 `;
 
+const Badge = styled(motion.div)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03);
+
+  .dot {
+    width: 8px; height: 8px;
+    background-color: #3498db;
+    border-radius: 50%;
+  }
+`;
+
 const Title = styled(motion.h1)`
-  font-size: clamp(3rem, 5vw, 4rem);
+  font-size: clamp(3.5rem, 5.5vw, 4.5rem);
   font-weight: 800;
-  line-height: 1.1;
-  color: #FFFFFF;
+  line-height: 1.05;
+  color: #0F172A;
   margin-bottom: 1.5rem;
   letter-spacing: -0.04em;
 `;
 
 const GradientText = styled.span`
-  background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 100%);
+  background: linear-gradient(135deg, #3498db 0%, #6366F1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -262,17 +318,22 @@ const GradientText = styled.span`
 
 const Subtitle = styled(motion.p)`
   font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: #475569;
   margin-bottom: 2.5rem;
   line-height: 1.6;
-  max-width: 95%;
+  max-width: 90%;
   font-weight: 400;
+
+  @media (max-width: 968px) {
+    max-width: 100%;
+  }
 `;
 
 const ButtonGroup = styled(motion.div)`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  margin-bottom: 3rem;
   
   @media (max-width: 968px) {
     justify-content: center;
@@ -284,9 +345,9 @@ const BaseButton = styled(motion.button)`
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px; 
-  font-size: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 9999px; 
+  font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
@@ -294,13 +355,13 @@ const BaseButton = styled(motion.button)`
 `;
 
 const PrimaryButton = styled(BaseButton)`
-  background: #0F172A;
+  background: #3498db;
   color: #FFFFFF;
-  box-shadow: 0 4px 14px 0 rgba(15, 23, 42, 0.25);
+  box-shadow: 0 10px 25px -5px rgba(52, 152, 219, 0.4);
 
   &:hover {
-    background: #1E293B;
-    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.23);
+    background: #2980b9;
+    box-shadow: 0 15px 30px -5px rgba(52, 152, 219, 0.5);
   }
 `;
 
@@ -308,7 +369,7 @@ const SecondaryButton = styled(BaseButton)`
   background: #FFFFFF;
   color: #334155;
   border: 1px solid #E2E8F0;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 
   &:hover {
     background: #F8FAFC;
@@ -317,70 +378,111 @@ const SecondaryButton = styled(BaseButton)`
   }
 `;
 
-const HeroImageContainer = styled(motion.div)`
-  .hero-img {
-    width: 100%;
-    max-width: 600px;
-    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.08));
-  }
-  
-  @media (max-width: 968px) {
+const HeroFooter = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .users-avatars {
     display: flex;
-    justify-content: center;
-    margin-top: 2rem;
+    .avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 3px solid white;
+      margin-left: -15px;
+      &:first-child { margin-left: 0; }
+    }
+    .a1 { background: #3498db; }
+    .a2 { background: #8B5CF6; }
+    .a3 { background: #FCD34D; }
+  }
+
+  .users-text {
+    font-size: 0.9rem;
+    color: #64748B;
+    line-height: 1.4;
+    strong { color: #0F172A; }
+  }
+`;
+
+const HeroImageWrapper = styled(motion.div)`
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .image-container {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    background: white;
+    border-radius: 32px;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    
+    .main-img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 16px;
+    }
+  }
+`;
+
+const HeroImageRing = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0%, rgba(52,152,219,0.1) 40%, rgba(139,92,246,0.1) 60%, transparent 100%);
+  animation: spin 15s linear infinite;
+  z-index: 1;
+
+  @keyframes spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
   }
 `;
 
 // SECTION TITLES
 const SectionHeader = styled.div`
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
 `;
 
-const SectionBadge = styled(motion.div)`
-  display: inline-block;
-  padding: 0.35rem 1rem;
-  background: #EEF2FF;
-  border: 1px solid #E0E7FF;
-  color: #4F46E5;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 1.25rem;
-`;
-
 const SectionTitle = styled(motion.h2)`
-  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  font-size: clamp(2.5rem, 4vw, 3rem);
   font-weight: 800;
-  color: #FFFFFF;
-  margin-bottom: 1.25rem;
+  color: #0F172A;
+  margin-bottom: 1.5rem;
   letter-spacing: -0.03em;
 `;
 
 const SectionSubtitle = styled(motion.p)`
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.25rem;
+  color: #64748B;
   line-height: 1.6;
 `;
 
 // FEATURES
 const FeaturesGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
 `;
 
 const FeatureCard = styled(motion.div)`
   background: #FFFFFF;
-  border-radius: 16px;
-  padding: 2.5rem 2rem;
+  border-radius: 24px;
+  padding: 3rem 2rem;
   border: 1px solid #F1F5F9;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.02);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -388,42 +490,42 @@ const FeatureCard = styled(motion.div)`
 `;
 
 const IconWrapper = styled.div`
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 `;
 
 const FeatureTitle = styled.h3`
-  font-size: 1.125rem;
-  font-weight: 700;
+  font-size: 1.25rem;
+  font-weight: 800;
   color: #0F172A;
-  margin-bottom: 0.75rem;
-  letter-spacing: -0.01em;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
 `;
 
 const FeatureText = styled.p`
   color: #64748B;
-  line-height: 1.6;
-  font-size: 0.95rem;
+  line-height: 1.7;
+  font-size: 1rem;
 `;
 
 // TESTIMONIALS
 const TestimonialsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+  gap: 2.5rem;
 `;
 
 const TestimonialCard = styled(motion.div)`
   background: #FFFFFF;
-  padding: 2.5rem;
-  border-radius: 16px;
-  border: 1px solid #F1F5F9;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  padding: 3rem;
+  border-radius: 24px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.03);
   position: relative;
   overflow: hidden;
 `;
@@ -431,58 +533,61 @@ const TestimonialCard = styled(motion.div)`
 const StarsRow = styled.div`
   display: flex;
   gap: 0.2rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 `;
 
 const TestimonialText = styled.p`
-  font-size: 1.05rem;
+  font-size: 1.125rem;
   color: #334155;
-  line-height: 1.7;
-  margin-bottom: 2rem;
-  font-weight: 400;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
 `;
 
 const TestimonialAuthor = styled.h4`
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1.05rem;
+  font-weight: 800;
   color: #0F172A;
 `;
 
 const TestimonialRole = styled.p`
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   color: #64748B;
-  margin-top: 0.2rem;
+  margin-top: 0.25rem;
 `;
 
 // CTA
 const CtaSection = styled.section`
-  padding: 2rem 0 6rem 0;
+  padding: 4rem 0 8rem 0;
 `;
 
 const CtaBox = styled(motion.div)`
-  background: #0F172A;
-  border-radius: 24px;
-  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: 32px;
+  padding: 6rem 2rem;
   text-align: center;
-  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.2);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.3);
 
-  /* Subtle inner pattern */
-  &::before {
+  /* Inner glow from the brand blue */
+  &::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
-    opacity: 0.5;
+    bottom: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(52,152,219,0.3) 0%, transparent 70%);
+    z-index: 1;
+    pointer-events: none;
   }
 `;
 
 const CtaTitle = styled.h2`
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: #FFFFFF;
   letter-spacing: -0.03em;
   position: relative;
@@ -490,9 +595,9 @@ const CtaTitle = styled.h2`
 `;
 
 const CtaText = styled.p`
-  font-size: 1.125rem;
+  font-size: 1.25rem;
   color: #94A3B8;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
@@ -502,14 +607,15 @@ const CtaText = styled.p`
 `;
 
 const PrimaryCtaButton = styled(BaseButton)`
-  background: #FFFFFF;
-  color: #0F172A;
-  box-shadow: 0 4px 14px 0 rgba(255, 255, 255, 0.1);
+  background: #3498db;
+  color: #FFFFFF;
+  box-shadow: 0 10px 25px -5px rgba(52, 152, 219, 0.4);
   position: relative;
   z-index: 2;
 
   &:hover {
-    background: #F8FAFC;
+    background: #2980b9;
+    box-shadow: 0 15px 30px -5px rgba(52, 152, 219, 0.5);
     transform: translateY(-2px);
   }
 `;
